@@ -190,15 +190,12 @@ export default async function Home() {
                                     className='text-gray-700 leading-relaxed mb-6'
                                     style={{ fontFamily: "Nunito, sans-serif" }}
                                 >
-                                    Laxmi Narain Dubey College was founded in
-                                    1966 in Motihari, East Champaran, Bihar. As
-                                    a constituent unit of B.R.A. Bihar
-                                    University, Muzaffarpur, we are committed to
-                                    providing quality education and fostering
-                                    holistic development. Our institution
-                                    combines traditional values with modern
-                                    teaching methodologies to prepare students
-                                    for the challenges of tomorrow.
+                                    AKIC Payandapur was founded in 1994, we are
+                                    committed to providing quality education and
+                                    fostering holistic development. Our
+                                    institution combines traditional values with
+                                    modern teaching methodologies to prepare
+                                    students for the challenges of tomorrow.
                                 </p>
                                 <Link href='/contact'>
                                     <Button>Learn More</Button>
