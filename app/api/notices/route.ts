@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
                 .select()
                 .from(notices)
                 .where(eq(notices.category, category))
-                .orderBy(notices.date);
+                .orderBy(notices.date); // ascending; see note below to change to descending
         } else {
             allNotices = await db.select().from(notices).orderBy(notices.date);
         }
@@ -38,12 +38,11 @@ export async function POST(request: NextRequest) {
             data: { user },
         } = await supabase.auth.getUser();
 
-        if (!user) {
+        if (!user)
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 }
             );
-        }
 
         const body = await request.json();
         const { title, content, category, date } = body;
@@ -82,12 +81,11 @@ export async function PUT(request: NextRequest) {
             data: { user },
         } = await supabase.auth.getUser();
 
-        if (!user) {
+        if (!user)
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 }
             );
-        }
 
         const body = await request.json();
         const { id, title, content, category, date } = body;
@@ -122,22 +120,20 @@ export async function DELETE(request: NextRequest) {
             data: { user },
         } = await supabase.auth.getUser();
 
-        if (!user) {
+        if (!user)
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 }
             );
-        }
 
         const searchParams = request.nextUrl.searchParams;
         const id = searchParams.get("id");
 
-        if (!id) {
+        if (!id)
             return NextResponse.json(
                 { error: "Notice ID is required" },
                 { status: 400 }
             );
-        }
 
         await db.delete(notices).where(eq(notices.id, parseInt(id, 10)));
 
