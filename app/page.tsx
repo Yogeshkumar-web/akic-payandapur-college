@@ -39,7 +39,7 @@ export default async function Home() {
                 style={{ backgroundColor: "#F8FAFC" }}
             >
                 {/* Hero Section with College Image */}
-                <section className='relative h-[600px] md:h-[700px] overflow-hidden'>
+                <section className='relative w-full h-[48vw] md:h-[420px] lg:h-[750px] overflow-hidden'>
                     <MainImages />
                 </section>
 
