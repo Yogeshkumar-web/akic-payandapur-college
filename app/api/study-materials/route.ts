@@ -9,8 +9,7 @@ export async function GET(request: NextRequest) {
         const searchParams = request.nextUrl.searchParams;
         const classParam = searchParams.get("class");
 
-        // DO NOT reassign a query-builder variable with different shapes.
-        // Run separate awaited queries for each branch so types remain consistent.
+        // Do NOT reassign a query-builder variable with different shapes.
         let materials;
         if (classParam) {
             materials = await db
@@ -35,6 +34,7 @@ export async function GET(request: NextRequest) {
     }
 }
 
+// POST and DELETE unchanged (keep your existing code)
 export async function POST(request: NextRequest) {
     try {
         const supabase = await createClient();
@@ -42,12 +42,11 @@ export async function POST(request: NextRequest) {
             data: { user },
         } = await supabase.auth.getUser();
 
-        if (!user) {
+        if (!user)
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 }
             );
-        }
 
         const body = await request.json();
         const {
@@ -93,22 +92,20 @@ export async function DELETE(request: NextRequest) {
             data: { user },
         } = await supabase.auth.getUser();
 
-        if (!user) {
+        if (!user)
             return NextResponse.json(
                 { error: "Unauthorized" },
                 { status: 401 }
             );
-        }
 
         const searchParams = request.nextUrl.searchParams;
         const id = searchParams.get("id");
 
-        if (!id) {
+        if (!id)
             return NextResponse.json(
                 { error: "Material ID is required" },
                 { status: 400 }
             );
-        }
 
         await db
             .delete(studyMaterials)
