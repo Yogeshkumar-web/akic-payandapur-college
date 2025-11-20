@@ -4,7 +4,7 @@ import { notices, studyMaterials, contactSubmissions } from "@/db/schema";
 import { sql } from "drizzle-orm";
 import Card from "@/components/ui/Card";
 
-async function getStats() {
+async function getStats() { 
     try {
         const [noticeCount] = await db
             .select({ count: sql<number>`count(*)` })
@@ -42,30 +42,16 @@ export default async function AdminDashboard() {
 
     return (
         <div>
-            {/* Header with Home button */}
-            <div className='flex items-center justify-between mb-6'>
-                <div>
-                    <h1
-                        className='text-4xl font-bold'
-                        style={{
-                            fontFamily: "Inter, sans-serif",
-                            color: "#0F172A",
-                        }}
-                    >
-                        Dashboard
-                    </h1>
-                </div>
-
-                <div className='flex items-center gap-3'>
-                    {/* Home button */}
-                    <Link
-                        href='/'
-                        className='inline-flex items-center px-4 py-2 rounded-lg border border-gray-200 bg-white text-sm text-gray-700 font-medium hover:bg-gray-50 transition'
-                    >
-                        Home
-                    </Link>
-                </div>
-            </div>
+            {/* Header */}
+            <h1
+                className='text-4xl font-bold mb-8'
+                style={{
+                    fontFamily: "Inter, sans-serif",
+                    color: "#0F172A",
+                }}
+            >
+                Dashboard
+            </h1>
 
             {/* Stats grid */}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
@@ -179,7 +165,7 @@ export default async function AdminDashboard() {
                     >
                         <div className='text-3xl mb-2'>➕</div>
                         <p
-                            className='font-medium'
+                            className='font-medium text-gray-700'
                             style={{ fontFamily: "Nunito, sans-serif" }}
                         >
                             Add New Notice
@@ -191,7 +177,7 @@ export default async function AdminDashboard() {
                     >
                         <div className='text-3xl mb-2'>📤</div>
                         <p
-                            className='font-medium'
+                            className='font-medium text-gray-700'
                             style={{ fontFamily: "Nunito, sans-serif" }}
                         >
                             Upload Study Material
@@ -203,7 +189,7 @@ export default async function AdminDashboard() {
                     >
                         <div className='text-3xl mb-2'>👁️</div>
                         <p
-                            className='font-medium'
+                            className='font-medium text-gray-700'
                             style={{ fontFamily: "Nunito, sans-serif" }}
                         >
                             View Contact Submissions

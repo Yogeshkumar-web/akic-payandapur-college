@@ -5,6 +5,7 @@ A modern, full-featured educational institute website built with Next.js, TypeSc
 ## Features
 
 ### Public Pages
+
 - **Homepage**: Hero section, stats, latest announcements, and about section
 - **Subjects**: Class-wise subject information (Classes 9-12 with Science/Arts streams)
 - **Notice Board**: Dynamic announcements with category filtering
@@ -12,12 +13,14 @@ A modern, full-featured educational institute website built with Next.js, TypeSc
 - **Contact**: Contact form with Google Maps integration
 
 ### Admin Panel
+
 - **Dashboard**: Overview statistics and quick actions
 - **Notices Management**: Create, edit, and delete notices
 - **Study Materials**: Upload and manage study materials with Supabase Storage
 - **Contact Submissions**: View and manage contact form submissions with status tracking
 
 ### Authentication
+
 - Secure admin authentication using Supabase Auth
 - Protected admin routes with middleware
 - Email/password login system
@@ -44,19 +47,22 @@ A modern, full-featured educational institute website built with Next.js, TypeSc
 ### Installation
 
 1. **Clone and install dependencies:**
+
    ```bash
    cd college_cursor
    pnpm install
    ```
 
 2. **Set up Supabase:**
+
    - Create a new project at [supabase.com](https://supabase.com)
    - Go to Settings > API to find your credentials
    - Go to Settings > Database to find your connection string
 
 3. **Configure environment variables:**
-   
+
    Create a `.env.local` file in the root directory:
+
    ```env
    NEXT_PUBLIC_SUPABASE_URL=your-project-url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
@@ -66,26 +72,34 @@ A modern, full-featured educational institute website built with Next.js, TypeSc
    ```
 
 4. **Set up the database:**
+
    ```bash
    # Generate migrations
    pnpm drizzle-kit generate
-   
+
    # Push schema to database
    pnpm drizzle-kit push
    ```
 
 5. **Create Supabase Storage bucket:**
+
+   ⚠️ **IMPORTANT**: This step is required for study materials upload to work!
+
    - Go to Storage in Supabase dashboard
-   - Create a new bucket named `study-materials`
-   - Set it to public access
-   - Add RLS policies as needed
+   - Create a new bucket named `study-materials` (exactly this name)
+   - Set it to **public access**
+   - Configure RLS policies for security
+
+   📖 **See [SUPABASE_STORAGE_SETUP.md](./SUPABASE_STORAGE_SETUP.md) for detailed instructions**
 
 6. **Create admin user:**
+
    - Go to Authentication in Supabase dashboard
    - Add a new user with email and password
    - This will be your admin login credentials
 
 7. **Run the development server:**
+
    ```bash
    pnpm dev
    ```
@@ -128,6 +142,7 @@ college_cursor/
 ### Tables
 
 **notices**
+
 - id (serial, primary key)
 - title (varchar)
 - content (text)
@@ -136,6 +151,7 @@ college_cursor/
 - created_at (timestamp)
 
 **study_materials**
+
 - id (serial, primary key)
 - title (varchar)
 - description (text)
@@ -145,6 +161,7 @@ college_cursor/
 - uploaded_at (timestamp)
 
 **contact_submissions**
+
 - id (serial, primary key)
 - name (varchar)
 - email (varchar)
@@ -202,6 +219,7 @@ The project follows a consistent design system defined in `.cursor/rules/`:
 ### Other Platforms
 
 The app can be deployed to any platform that supports Next.js:
+
 - Netlify
 - Railway
 - AWS Amplify

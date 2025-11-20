@@ -38,6 +38,18 @@ export default function AdminStudyMaterialsPage() {
     }
   };
 
+  const checkAuth = async () => {
+    try {
+      const response = await fetch('/api/auth/check');
+      const data = await response.json();
+      console.log('Authentication status:', data);
+      alert(JSON.stringify(data, null, 2));
+    } catch (error) {
+      console.error('Error checking auth:', error);
+      alert('Error checking authentication');
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setSelectedFile(e.target.files[0]);
@@ -49,6 +61,13 @@ export default function AdminStudyMaterialsPage() {
     
     if (!selectedFile) {
       alert('Please select a file to upload');
+      return;
+    }
+
+    // Check file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB
+    if (selectedFile.size > maxSize) {
+      alert('File size exceeds 10MB limit. Please select a smaller file.');
       return;
     }
 
@@ -65,7 +84,8 @@ export default function AdminStudyMaterialsPage() {
       });
 
       if (!uploadResponse.ok) {
-        throw new Error('Failed to upload file');
+        const errorData = await uploadResponse.json();
+        throw new Error(errorData.error || 'Failed to upload file');
       }
 
       const { fileUrl } = await uploadResponse.json();
@@ -85,11 +105,13 @@ export default function AdminStudyMaterialsPage() {
         resetForm();
         alert('Study material uploaded successfully!');
       } else {
-        alert('Failed to save material');
+        const errorData = await materialResponse.json();
+        alert(errorData.error || 'Failed to save material');
       }
     } catch (error) {
       console.error('Error uploading material:', error);
-      alert('An error occurred while uploading');
+      const errorMessage = error instanceof Error ? error.message : 'An error occurred while uploading';
+      alert(errorMessage);
     } finally {
       setUploading(false);
     }
@@ -137,9 +159,14 @@ export default function AdminStudyMaterialsPage() {
         >
           Manage Study Materials
         </h1>
-        <Button onClick={() => setShowForm(!showForm)}>
-          {showForm ? 'Cancel' : 'Upload New Material'}
-        </Button>
+        <div className="flex gap-2">
+          {/* <Button onClick={checkAuth} variant="secondary">
+            Check Auth
+          </Button> */}
+          <Button onClick={() => setShowForm(!showForm)}>
+            {showForm ? 'Cancel' : 'Upload New Material'}
+          </Button>
+        </div>
       </div>
 
       {showForm && (
@@ -247,20 +274,20 @@ export default function AdminStudyMaterialsPage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-gray-200">
-                  <th className="text-left py-3 px-4 font-semibold">Title</th>
-                  <th className="text-left py-3 px-4 font-semibold">Class</th>
-                  <th className="text-left py-3 px-4 font-semibold">Subject</th>
-                  <th className="text-left py-3 px-4 font-semibold">Uploaded</th>
-                  <th className="text-right py-3 px-4 font-semibold">Actions</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Title</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Class</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Subject</th>
+                  <th className="text-left py-3 px-4 font-semibold text-gray-700">Uploaded</th>
+                  <th className="text-right py-3 px-4 font-semibold text-gray-700">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {materials.map((material) => (
                   <tr key={material.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 px-4">{material.title}</td>
-                    <td className="py-3 px-4">Class {material.class}</td>
-                    <td className="py-3 px-4">{material.subject}</td>
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-4 text-gray-700">{material.title}</td>
+                    <td className="py-3 px-4 text-gray-700">Class {material.class}</td>
+                    <td className="py-3 px-4 text-gray-700">{material.subject}</td>
+                    <td className="py-3 px-4 text-gray-700">
                       {new Date(material.uploadedAt).toLocaleDateString('en-IN')}
                     </td>
                     <td className="py-3 px-4 text-right space-x-2">

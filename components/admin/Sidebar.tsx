@@ -9,7 +9,7 @@ const links = [
     { href: "/admin/notices", label: "Notices", icon: "📢" },
     { href: "/admin/study-materials", label: "Materials", icon: "📚" },
     { href: "/admin/contacts", label: "Contacts", icon: "📧" },
-    { href: "/admin/settings", label: "Settings", icon: "⚙️" },
+    // { href: "/admin/settings", label: "Settings", icon: "⚙️" },
 ];
 
 export default function Sidebar() {
@@ -95,6 +95,42 @@ export default function Sidebar() {
                     })}
                 </ul>
             </nav>
+
+            {/* HOME BUTTON - Bottom of sidebar */}
+            <div className='border-t p-2 md:p-4'>
+                <Link
+                    href='/'
+                    title='Go to Homepage'
+                    className='
+                        group
+                        flex items-center gap-3
+                        px-3 py-2 md:px-6
+                        text-gray-700 hover:bg-gray-50
+                        transition-colors rounded-md
+                    '
+                >
+                    {/* ICON (always visible) */}
+                    <span
+                        className='
+                            flex items-center justify-center
+                            w-8 h-8 rounded-md
+                            text-lg
+                        '
+                    >
+                        🏡
+                    </span>
+
+                    {/* LABEL (hidden on mobile) */}
+                    <span
+                        className='hidden md:inline font-medium'
+                        style={{
+                            fontFamily: "Nunito, sans-serif",
+                        }}
+                    >
+                        Home
+                    </span>
+                </Link>
+            </div>
         </aside>
     );
 }
