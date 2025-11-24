@@ -32,7 +32,7 @@ export async function deleteFile(fileUrl: string) {
   const url = new URL(fileUrl);
   const pathParts = url.pathname.split('/study-materials/');
   if (pathParts.length < 2) return;
-  
+   
   const filePath = pathParts[1];
 
   const { error } = await supabase.storage

@@ -1,8 +1,9 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react';
 
+
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'outline';
   fullWidth?: boolean;
 }
 
@@ -18,6 +19,7 @@ export default function Button({
   const variantStyles = {
     primary: 'text-white focus:ring-blue-500 hover:opacity-90',
     secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500',
+    outline: 'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-blue-500',
   };
 
   const widthStyle = fullWidth ? 'w-full' : '';
@@ -28,6 +30,7 @@ export default function Button({
       style={variant === 'primary' ? { backgroundColor: '#0B5FFF' } : undefined}
       {...props}
     >
+
       {children}
     </button>
   );

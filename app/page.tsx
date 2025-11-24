@@ -17,7 +17,7 @@ async function getLatestNotices() {
         });
         if (response.ok) {
             const notices = await response.json();
-            return notices.slice(0, 3);
+            return notices.slice(0, 3); 
         }
         return [];
     } catch (error) {
@@ -55,7 +55,7 @@ export default async function Home() {
                                         fontFamily: "Inter, sans-serif",
                                     }}
                                 >
-                                    1500+
+                                    300+
                                 </h3>
                                 <p
                                     className='text-gray-600'
@@ -72,7 +72,7 @@ export default async function Home() {
                                         fontFamily: "Inter, sans-serif",
                                     }}
                                 >
-                                    80+
+                                    16+
                                 </h3>
                                 <p
                                     className='text-gray-600'

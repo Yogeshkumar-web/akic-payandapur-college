@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -146,7 +147,7 @@ export default function CollegeBranding({
                                 className='text-base sm:text-lg md:text-xl lg:text-2xl font-medium italic'
                                 style={{
                                     fontFamily: "Georgia, serif",
-                                    color: '#1F2937',
+                                    color: '#f0f0f1',
                                     textShadow: '0 2px 4px rgba(0,0,0,0.1)',
                                     letterSpacing: '0.03em',
                                 }}
