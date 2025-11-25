@@ -30,6 +30,7 @@ export async function addNotice(formData: FormData) {
   const title = formData.get('title') as string
   const content = formData.get('content') as string
   const category = formData.get('category') as string
+  const attachmentUrl = formData.get('attachmentUrl') as string | null
   const date = new Date()
 
   await db.insert(notices).values({
@@ -37,6 +38,7 @@ export async function addNotice(formData: FormData) {
     content,
     category,
     date,
+    attachmentUrl: attachmentUrl || null,
   })
 
   revalidatePath('/')

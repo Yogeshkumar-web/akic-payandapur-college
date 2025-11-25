@@ -24,8 +24,15 @@ export async function createClient() {
           }
         },
       },
+      global: {
+        fetch: (url, options) => {
+          console.log('Supabase fetch called with timeout 60s:', url);
+          return fetch(url, {
+            ...options,
+            signal: AbortSignal.timeout(60000), // 60 seconds timeout
+          });
+        },
+      },
     }
   );
 }
-
- 

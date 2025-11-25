@@ -137,6 +137,23 @@ export default function NoticeCard({ notice, index = 0 }: NoticeCardProps) {
             {notice.content}
           </p>
 
+          {/* Attachment Link */}
+          {notice.attachmentUrl && (
+            <div className="mt-4 pt-3 border-t border-gray-200">
+              <a
+                href={notice.attachmentUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download Attachment
+              </a>
+            </div>
+          )}
+
           {/* Decorative corner fold */}
           <div 
             className="absolute bottom-0 right-0 w-0 h-0"

@@ -6,6 +6,7 @@ export const notices = pgTable('notices', {
   content: text('content').notNull(),
   category: varchar('category', { length: 50 }).notNull(), // Academic, Events, Holidays, General
   date: timestamp('date').notNull(),
+  attachmentUrl: text('attachment_url'), // Optional PDF or image attachment
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
