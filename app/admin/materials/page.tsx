@@ -6,7 +6,7 @@ import { uploadFile } from '@/lib/supabase/storage'
 import { useState } from 'react'
 
 export default function UploadMaterialPage() {
-  const [uploading, setUploading] = useState(false)
+  const [uploading, setUploading] = useState(false) 
   const [fileUrl, setFileUrl] = useState('')
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
