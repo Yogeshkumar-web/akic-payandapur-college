@@ -150,6 +150,7 @@ export default async function Home() {
                                         date: Date;
                                         category: string;
                                         createdAt: Date;
+                                        attachmentUrl?: string | null;
                                     }) => (
                                         <NoticeCard
                                             key={notice.id}
