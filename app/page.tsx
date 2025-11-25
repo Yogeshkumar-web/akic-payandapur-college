@@ -7,6 +7,7 @@ import Button from "@/components/ui/Button";
 import TopStripe from "@/components/TopStripe";
 import CollegeBranding from "@/components/CollegeBranding";
 import MainImages from "@/components/MainImages";
+import { Notice } from "@/db/schema";
 
 async function getLatestNotices() {
     try {
@@ -142,22 +143,12 @@ export default async function Home() {
                         </div>
                         {latestNotices.length > 0 ? (
                             <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-                                {latestNotices.map(
-                                    (notice: {
-                                        id: number;
-                                        title: string;
-                                        content: string;
-                                        date: Date;
-                                        category: string;
-                                        createdAt: Date;
-                                        attachmentUrl?: string | null;
-                                    }) => (
-                                        <NoticeCard
-                                            key={notice.id}
-                                            notice={notice}
-                                        />
-                                    )
-                                )}
+                                {latestNotices.map((notice: Notice) => (
+                                    <NoticeCard
+                                        key={notice.id}
+                                        notice={notice}
+                                    />
+                                ))}
                             </div>
                         ) : (
                             <div className='bg-white rounded-2xl shadow-md p-8 text-center'>
