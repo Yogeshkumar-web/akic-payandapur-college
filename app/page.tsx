@@ -11,6 +11,8 @@ import MotionReveal from "@/components/MotionReveal";
 import ContactForm from "@/components/ContactForm";
 import { Notice } from "@/db/schema";
 
+export const dynamic = "force-dynamic";
+
 async function getLatestNotices() {
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
