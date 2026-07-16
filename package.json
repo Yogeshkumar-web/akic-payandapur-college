@@ -12,11 +12,11 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.7.0",
-    "@supabase/supabase-js": "^2.83.0",
-    "drizzle-orm": "^0.44.7",
+    "@supabase/ssr": "^0.12.3",
+    "@supabase/supabase-js": "^2.110.7",
+    "drizzle-orm": "^0.45.2",
     "framer-motion": "^12.42.2",
-    "next": "16.0.3",
+    "next": "16.2.10",
     "postgres": "^3.4.7",
     "react": "19.2.0",
     "react-dom": "19.2.0"
@@ -26,10 +26,9 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "babel-plugin-react-compiler": "1.0.0",
-    "drizzle-kit": "^0.31.7",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^9",
-    "eslint-config-next": "16.0.3",
+    "eslint-config-next": "16.2.10",
     "tailwindcss": "4.1.17",
     "typescript": "^5"
   }

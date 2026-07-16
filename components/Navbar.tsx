@@ -40,8 +40,6 @@ export default function Navbar() {
     };
   }, []);
 
-  useEffect(() => setIsOpen(false), [pathname]);
-
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -167,6 +165,7 @@ export default function Navbar() {
                   <Link
                     key={link.href}
                     href={link.href}
+                    onClick={() => setIsOpen(false)}
                     className={`flex min-h-12 items-center rounded-xl px-4 font-bold ${
                       active
                         ? "bg-[#FFF7D6] text-[#8B1E2D]"

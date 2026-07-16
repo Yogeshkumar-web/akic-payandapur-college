@@ -10,7 +10,6 @@ const initialState = {
 }
 
 export default function LoginPage() {
-  // @ts-ignore
   const [state, formAction, isPending] = useActionState(login, initialState)
 
   return (

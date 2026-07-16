@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
-import { notices, studyMaterials, users, contactSubmissions } from '@/db/schema'
+import { notices, studyMaterials, contactSubmissions } from '@/db/schema'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'

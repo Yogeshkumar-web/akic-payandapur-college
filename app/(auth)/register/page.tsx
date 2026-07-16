@@ -10,7 +10,6 @@ const initialState = {
 }
 
 export default function RegisterPage() {
-  // @ts-ignore
   const [state, formAction, isPending] = useActionState(signup, initialState)
 
   return (

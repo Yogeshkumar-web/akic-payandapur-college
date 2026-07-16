@@ -36,7 +36,7 @@ export default function ContactForm() {
         const data = await response.json();
         setError(data.error || 'Failed to submit form');
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);

@@ -5,9 +5,12 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { db } from '@/lib/db'
 import { users } from '@/db/schema'
-import { eq } from 'drizzle-orm'
 
-export async function login(prevState: any, formData: FormData) {
+export type AuthActionState = {
+  error: string
+}
+
+export async function login(_prevState: AuthActionState, formData: FormData) {
   const supabase = await createClient()
 
   const email = formData.get('email') as string
@@ -26,7 +29,7 @@ export async function login(prevState: any, formData: FormData) {
   redirect('/')
 }
 
-export async function signup(prevState: any, formData: FormData) {
+export async function signup(_prevState: AuthActionState, formData: FormData) {
   const supabase = await createClient()
 
   const email = formData.get('email') as string
