@@ -2,374 +2,210 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
+const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/subjects", label: "Subjects" },
+  { href: "/notices", label: "Notice Board" },
+  { href: "/resources", label: "Resources" },
+  { href: "/contact", label: "Contact" },
+  { href: "/gallery", label: "Gallery" },
+];
+
 export default function Navbar() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [user, setUser] = useState<any>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const pathname = usePathname();
+  const reduceMotion = useReducedMotion();
 
-    useEffect(() => {
-        const supabase = createClient();
-        let mounted = true;
+  useEffect(() => {
+    const supabase = createClient();
+    let mounted = true;
 
-        (async () => {
-            try {
-                const { data } = await supabase.auth.getSession();
-                if (!mounted) return;
-                setUser(data?.session?.user ?? null);
-            } catch (e) {}
-        })();
+    void supabase.auth.getSession().then(({ data }) => {
+      if (mounted) setUser(data.session?.user ?? null);
+    });
 
-        const { data: sub } = supabase.auth.onAuthStateChange(
-            (_event, session) => {
-                setUser(session?.user ?? null);
-            }
-        );
-
-        return () => {
-            mounted = false;
-            sub?.subscription?.unsubscribe?.();
-        };
-    }, []);
-
-    const handleLogout = async () => {
-        const supabase = createClient();
-        await supabase.auth.signOut();
-        window.location.href = "/login";
-    };
-
-    const navLinks = [
-        { href: "/", label: "Home" },
-        { href: "/subjects", label: "Subjects" },
-        { href: "/notices", label: "Notice Board" },
-        { href: "/resources", label: "Resources" },
-        { href: "/contact", label: "Contact" },
-        { href: "/gallery", label: "Gallery" },
-    ];
-
-    return (
-        <nav className='bg-white shadow-sm sticky top-0 z-50'>
-            <div className='max-w-7xl mx-auto px-4 md:px-8'>
-                <div className='flex items-center justify-between h-16'>
-                    {/* LEFT: Brand */}
-                    <div className='flex items-center gap-6'>
-                        <Link href='/' className='flex items-center gap-2'>
-                            <span
-                                className='text-xl md:text-2xl font-bold'
-                                style={{
-                                    color: "#0B5FFF",
-                                    fontFamily: "Inter, sans-serif",
-                                }}
-                            >
-                                AKIC Payandapur
-                            </span>
-                        </Link>
-
-                        {/* DESKTOP LINKS */}
-                        <div className='hidden md:flex space-x-6'>
-                            {navLinks.map((link) => (
-                                <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className='text-gray-700 hover:text-blue-600 transition font-medium'
-                                >
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* RIGHT: Admin Panel / Login/Logout + Mobile Hamburger */}
-                    <div className='flex items-center gap-3'>
-                        {/* Desktop: when logged-in show Admin Panel + Logout */}
-                        <div className='hidden md:flex items-center gap-3'>
-                            {user ? (
-                                <>
-                                    <Link
-                                        href='/admin'
-                                        className='px-4 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 transition text-sm font-medium'
-                                    >
-                                        Admin Panel
-                                    </Link>
-
-                                    <button
-                                        onClick={handleLogout}
-                                        className='px-4 py-2 rounded-lg bg-red-600 text-sm text-white hover:bg-red-700 transition'
-                                    >
-                                        Logout
-                                    </button>
-                                </>
-                            ) : (
-                                <Link
-                                    href='/login'
-                                    className='px-4 py-2 rounded-lg bg-blue-600 text-sm text-white hover:bg-blue-700 transition'
-                                >
-                                    Login
-                                </Link>
-                            )}
-                        </div>
-
-                        {/* Mobile hamburger */}
-                        <button
-                            onClick={() => setIsOpen((s) => !s)}
-                            className='md:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-800'
-                            aria-label={isOpen ? "Close menu" : "Open menu"}
-                        >
-                            <svg
-                                className='w-6 h-6'
-                                viewBox='0 0 24 24'
-                                fill='none'
-                                stroke='currentColor'
-                                aria-hidden
-                            >
-                                {isOpen ? (
-                                    <path
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
-                                        strokeWidth={2}
-                                        d='M6 18L18 6M6 6l12 12'
-                                    />
-                                ) : (
-                                    <path
-                                        strokeLinecap='round'
-                                        strokeLinejoin='round'
-                                        strokeWidth={2}
-                                        d='M4 6h16M4 12h16M4 18h16'
-                                    />
-                                )}
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                {/* MOBILE MENU */}
-                {isOpen && (
-                    <div className='md:hidden py-4 space-y-2 border-t border-gray-100'>
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                onClick={() => setIsOpen(false)}
-                                className='block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg'
-                            >
-                                {link.label}
-                            </Link>
-                        ))}
-
-                        <div className='px-4 pt-2 space-y-2'>
-                            {user ? (
-                                <>
-                                    <Link
-                                        href='/admin'
-                                        onClick={() => setIsOpen(false)}
-                                        className='w-full block text-center px-4 py-2 rounded-lg border border-blue-600 text-blue-600 hover:bg-blue-50 transition'
-                                    >
-                                        Admin Panel
-                                    </Link>
-
-                                    <button
-                                        onClick={() => {
-                                            setIsOpen(false);
-                                            handleLogout();
-                                        }}
-                                        className='w-full text-center px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition'
-                                    >
-                                        Logout
-                                    </button>
-                                </>
-                            ) : (
-                                <Link
-                                    href='/login'
-                                    onClick={() => setIsOpen(false)}
-                                    className='w-full block text-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition'
-                                >
-                                    Login
-                                </Link>
-                            )}
-                        </div>
-                    </div>
-                )}
-            </div>
-        </nav>
+    const { data: subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => setUser(session?.user ?? null)
     );
+
+    return () => {
+      mounted = false;
+      subscription.subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => setIsOpen(false), [pathname]);
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    window.location.href = "/login";
+  };
+
+  return (
+    <header className="sticky top-0 z-50 border-b border-[#EADFD2]/80 bg-white/95 backdrop-blur-xl">
+      <div className="site-container flex min-h-18 items-center justify-between gap-4 py-3">
+        <Link href="/" className="group flex min-w-0 items-center gap-3">
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#8B1E2D] text-sm font-black tracking-tight text-white shadow-sm transition group-hover:-translate-y-0.5">
+            AK
+          </span>
+          <span className="min-w-0">
+            <span className="block truncate font-[var(--font-inter)] text-lg font-extrabold tracking-[-0.025em] text-[#8B1E2D] sm:text-xl">
+              AKIC Payandapur
+            </span>
+            <span className="hidden truncate text-xs font-semibold text-[#765F5F] sm:block">
+              आर्य कृषक इण्टर कॉलेज
+            </span>
+          </span>
+        </Link>
+
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary navigation">
+          {navLinks.map((link) => {
+            const active =
+              pathname === link.href ||
+              (link.href !== "/" && pathname.startsWith(link.href));
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`relative rounded-lg px-3 py-2 text-sm font-bold transition ${
+                  active
+                    ? "text-[#8B1E2D]"
+                    : "text-[#6F5555] hover:bg-[#FFFDF5] hover:text-[#8B1E2D]"
+                }`}
+              >
+                {link.label}
+                {active ? (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-x-3 -bottom-[13px] h-0.5 bg-[#F4B400]"
+                  />
+                ) : null}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <div className="hidden lg:block">
+            {user ? (
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/admin"
+                  className="inline-flex min-h-11 items-center rounded-xl border border-[#DCCBBB] px-4 text-sm font-bold text-[#8B1E2D] transition hover:bg-[#FFFDF5]"
+                >
+                  Admin Panel
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="inline-flex min-h-11 items-center rounded-xl bg-[#8B1E2D] px-4 text-sm font-bold text-white transition hover:bg-[#A52836]"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="inline-flex min-h-11 items-center rounded-xl bg-[#8B1E2D] px-5 text-sm font-bold !text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-[#A52836] hover:!text-white hover:shadow-lg"
+              >
+                Login
+              </Link>
+            )}
+          </div>
+
+          <button
+            onClick={() => setIsOpen((open) => !open)}
+            className="flex size-11 items-center justify-center rounded-xl border border-[#EADFD2] bg-white text-[#8B1E2D] lg:hidden"
+            aria-expanded={isOpen}
+            aria-controls="mobile-navigation"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+          >
+            <span className="sr-only">{isOpen ? "Close menu" : "Open menu"}</span>
+            <span className="relative block h-4 w-5">
+              <span
+                className={`absolute left-0 top-0 h-0.5 w-5 bg-current transition ${
+                  isOpen ? "translate-y-[7px] rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-[7px] h-0.5 w-5 bg-current transition ${
+                  isOpen ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-[14px] h-0.5 w-5 bg-current transition ${
+                  isOpen ? "-translate-y-[7px] -rotate-45" : ""
+                }`}
+              />
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <AnimatePresence>
+        {isOpen ? (
+          <motion.div
+            id="mobile-navigation"
+            initial={reduceMotion ? false : { opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={reduceMotion ? undefined : { opacity: 0, height: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden border-t border-[#F0E5D8] bg-white lg:hidden"
+          >
+            <nav className="site-container grid gap-1 py-4" aria-label="Mobile navigation">
+              {navLinks.map((link) => {
+                const active =
+                  pathname === link.href ||
+                  (link.href !== "/" && pathname.startsWith(link.href));
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`flex min-h-12 items-center rounded-xl px-4 font-bold ${
+                      active
+                        ? "bg-[#FFF7D6] text-[#8B1E2D]"
+                        : "text-[#6F5555] hover:bg-[#FFFDF5]"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+              <div className="mt-3 border-t border-[#F0E5D8] pt-4">
+                {user ? (
+                  <div className="grid grid-cols-2 gap-3">
+                    <Link
+                      href="/admin"
+                      className="flex min-h-12 items-center justify-center rounded-xl border border-[#DCCBBB] font-bold text-[#8B1E2D]"
+                    >
+                      Admin Panel
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="min-h-12 rounded-xl bg-[#8B1E2D] font-bold text-white"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="flex min-h-12 items-center justify-center rounded-xl bg-[#8B1E2D] font-bold !text-white hover:!text-white"
+                  >
+                    Login
+                  </Link>
+                )}
+              </div>
+            </nav>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </header>
+  );
 }
-
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-// "use client";
-
-// import Link from "next/link";
-// import { useState, useEffect } from "react";
-// import { createClient } from "@/lib/supabase/client";
-
-// export default function Navbar() {
-//     const [isOpen, setIsOpen] = useState(false);
-//     const [user, setUser] = useState<any>(null);
-
-//     useEffect(() => {
-//         const supabase = createClient();
-//         let mounted = true;
-
-//         (async () => {
-//             try {
-//                 const { data } = await supabase.auth.getSession();
-//                 if (!mounted) return;
-//                 setUser(data?.session?.user ?? null);
-//             } catch (e) {}
-//         })();
-
-//         const { data: sub } = supabase.auth.onAuthStateChange(
-//             (_event, session) => {
-//                 setUser(session?.user ?? null);
-//             }
-//         );
-
-//         return () => {
-//             mounted = false;
-//             sub?.subscription?.unsubscribe?.();
-//         };
-//     }, []);
-
-//     const handleLogout = async () => {
-//         const supabase = createClient();
-//         await supabase.auth.signOut();
-//         // redirect to login or home
-//         window.location.href = "/login";
-//     };
-
-//     const navLinks = [
-//         // { href: "/", label: "Home" },
-//         { href: "/subjects", label: "Subjects" },
-//         { href: "/notices", label: "Notice Board" },
-//         { href: "/resources", label: "Resources" },
-//         { href: "/contact", label: "Contact" },
-//         { href: "/gallery", label: "Gallery" },
-//     ];
-
-//     return (
-//         <nav className='bg-white shadow-sm sticky top-0 z-50'>
-//             <div className='max-w-7xl mx-auto px-4 md:px-8'>
-//                 <div className='flex items-center justify-between h-16'>
-//                     {/* LEFT: Brand */}
-//                     <div className='flex items-center gap-6'>
-//                         <Link href='/' className='flex items-center gap-2'>
-//                             <span
-//                                 className='text-xl md:text-2xl font-bold'
-//                                 style={{
-//                                     color: "#0B5FFF",
-//                                     fontFamily: "Inter, sans-serif",
-//                                 }}
-//                             >
-//                                 AKIC Payandapur
-//                             </span>
-//                         </Link>
-
-//                         {/* DESKTOP LINKS */}
-//                         <div className='hidden md:flex space-x-6'>
-//                             {navLinks.map((link) => (
-//                                 <Link
-//                                     key={link.href}
-//                                     href={link.href}
-//                                     className='text-gray-700 hover:text-blue-600 transition font-medium'
-//                                 >
-//                                     {link.label}
-//                                 </Link>
-//                             ))}
-//                         </div>
-//                     </div>
-
-//                     {/* RIGHT: Login/Logout + Mobile Hamburger */}
-//                     <div className='flex items-center gap-3'>
-//                         {/* Desktop Login/Logout */}
-//                         <div className='hidden md:block'>
-//                             {user ? (
-//                                 <button
-//                                     onClick={handleLogout}
-//                                     className='px-4 py-2 rounded-lg bg-red-600 text-sm text-white hover:bg-red-700 transition'
-//                                 >
-//                                     Logout
-//                                 </button>
-//                             ) : (
-//                                 <Link
-//                                     href='/login'
-//                                     className='px-4 py-2 rounded-lg bg-blue-600 text-sm text-white hover:bg-blue-700 transition'
-//                                 >
-//                                     Login
-//                                 </Link>
-//                             )}
-//                         </div>
-
-//                         {/* Mobile hamburger */}
-//                         <button
-//                             onClick={() => setIsOpen((s) => !s)}
-//                             className='md:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-800'
-//                             aria-label={isOpen ? "Close menu" : "Open menu"}
-//                         >
-//                             <svg
-//                                 className='w-6 h-6'
-//                                 viewBox='0 0 24 24'
-//                                 fill='none'
-//                                 stroke='currentColor'
-//                                 aria-hidden
-//                             >
-//                                 {isOpen ? (
-//                                     <path
-//                                         strokeLinecap='round'
-//                                         strokeLinejoin='round'
-//                                         strokeWidth={2}
-//                                         d='M6 18L18 6M6 6l12 12'
-//                                     />
-//                                 ) : (
-//                                     <path
-//                                         strokeLinecap='round'
-//                                         strokeLinejoin='round'
-//                                         strokeWidth={2}
-//                                         d='M4 6h16M4 12h16M4 18h16'
-//                                     />
-//                                 )}
-//                             </svg>
-//                         </button>
-//                     </div>
-//                 </div>
-
-//                 {/* MOBILE MENU: show links + login/logout */}
-//                 {isOpen && (
-//                     <div className='md:hidden py-4 space-y-2 border-t border-gray-100'>
-//                         {navLinks.map((link) => (
-//                             <Link
-//                                 key={link.href}
-//                                 href={link.href}
-//                                 onClick={() => setIsOpen(false)}
-//                                 className='block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg'
-//                             >
-//                                 {link.label}
-//                             </Link>
-//                         ))}
-
-//                         <div className='px-4 pt-2'>
-//                             {user ? (
-//                                 <button
-//                                     onClick={() => {
-//                                         setIsOpen(false);
-//                                         handleLogout();
-//                                     }}
-//                                     className='w-full text-center px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition'
-//                                 >
-//                                     Logout
-//                                 </button>
-//                             ) : (
-//                                 <Link
-//                                     href='/login'
-//                                     onClick={() => setIsOpen(false)}
-//                                     className='w-full block text-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition'
-//                                 >
-//                                     Login
-//                                 </Link>
-//                             )}
-//                         </div>
-//                     </div>
-//                 )}
-//             </div>
-//         </nav>
-//     );
-// }

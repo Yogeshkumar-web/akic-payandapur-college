@@ -18,18 +18,18 @@ export default function Tabs({ tabs, defaultTab }: TabsProps) {
 
   return (
     <div className="w-full">
-      <div className="border-b border-gray-200 mb-6">
-        <div className="flex space-x-1 overflow-x-auto">
+      <div className="mb-7 border-b border-[#EADFD2]">
+        <div className="flex gap-1 overflow-x-auto [scrollbar-width:none]">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-3 font-medium text-sm whitespace-nowrap transition-colors border-b-2 ${
+              className={`min-h-12 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-extrabold transition-colors ${
                 activeTab === tab.id
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                  ? 'border-[#C62828] text-[#C62828]'
+                  : 'border-transparent text-[#765F5F] hover:border-[#D2BFAE] hover:text-[#2B1717]'
               }`}
-              style={activeTab === tab.id ? { borderColor: '#0B5FFF', color: '#0B5FFF' } : undefined}
+              style={activeTab === tab.id ? { borderColor: '#C62828', color: '#C62828' } : undefined}
             >
               {tab.label}
             </button>

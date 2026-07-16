@@ -27,7 +27,7 @@ export default function Sidebar() {
             {/* BRAND AREA */}
             <div className='flex items-center justify-center md:justify-start px-2 md:px-6 py-4 border-b gap-3'>
                 {/* MOBILE BRAND LOGO (only visible on small) */}
-                <div className='w-10 h-10 rounded-md bg-blue-600 flex items-center justify-center text-gray-900 font-bold md:hidden'>
+                <div className='w-10 h-10 rounded-md bg-red-700 flex items-center justify-center text-gray-900 font-bold md:hidden'>
                     AK
                 </div>
 
@@ -62,7 +62,7 @@ export default function Sidebar() {
                                         px-3 py-2 md:px-6
                                         ${
                                             active
-                                                ? "bg-blue-50 text-blue-600"
+                                                ? "bg-yellow-50 text-red-700"
                                                 : "text-gray-700 hover:bg-gray-50"
                                         }
                                         transition-colors rounded-md mx-2 md:mx-4
@@ -73,7 +73,7 @@ export default function Sidebar() {
                                         className={`
                                             flex items-center justify-center
                                             w-8 h-8 rounded-md
-                                            ${active ? "bg-blue-100" : ""}
+                                            ${active ? "bg-yellow-100" : ""}
                                             text-lg
                                         `}
                                     >
@@ -169,7 +169,7 @@ export default function Sidebar() {
 //                 <h2
 //                     className='text-xl font-bold'
 //                     style={{
-//                         color: "#0B5FFF",
+//                         color: "#C62828",
 //                         fontFamily: "Inter, sans-serif",
 //                     }}
 //                 >
@@ -193,7 +193,7 @@ export default function Sidebar() {
 //                                     }`}
 //                                     style={
 //                                         isActive
-//                                             ? { backgroundColor: "#0B5FFF" }
+//                                             ? { backgroundColor: "#C62828" }
 //                                             : undefined
 //                                     }
 //                                 >

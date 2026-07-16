@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import MaterialCard from '@/components/MaterialCard';
 import Tabs from '@/components/ui/Tabs';
 import { StudyMaterial } from '@/db/schema';
+import MotionReveal from '@/components/MotionReveal';
 
 export default function ResourcesPage() {
   const [materials, setMaterials] = useState<StudyMaterial[]>([]);
@@ -39,7 +40,7 @@ export default function ResourcesPage() {
     if (loading) {
       return (
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-red-700 border-t-transparent"></div>
           <p className="mt-4 text-gray-600" style={{ fontFamily: 'Nunito, sans-serif' }}>
             Loading materials...
           </p>
@@ -95,12 +96,13 @@ export default function ResourcesPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen py-16" style={{ backgroundColor: '#F8FAFC' }}>
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="mb-8">
+      <main className="min-h-screen bg-white">
+        <section className="page-heading">
+        <div className="site-container">
+          <MotionReveal>
             <h1
               className="text-4xl md:text-5xl font-bold mb-4"
-              style={{ fontFamily: 'Inter, sans-serif', color: '#0F172A' }}
+              style={{ fontFamily: 'Inter, sans-serif', color: '#2B1717' }}
             >
               Study Resources
             </h1>
@@ -110,11 +112,13 @@ export default function ResourcesPage() {
             >
               Download study materials, notes, and resources for your class.
             </p>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
+          </MotionReveal>
+        </div>
+        </section>
+        <div className="site-container py-10 md:py-16">
+          <MotionReveal className="rounded-2xl border border-[#EADFD2] bg-white p-4 shadow-[0_15px_45px_rgba(95,15,26,0.08)] md:p-8">
             <Tabs tabs={tabs} />
-          </div>
+          </MotionReveal>
         </div>
       </main>
       <Footer />

@@ -1,38 +1,35 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
-
+import { ButtonHTMLAttributes, ReactNode } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: "primary" | "secondary" | "outline";
   fullWidth?: boolean;
 }
 
 export default function Button({
   children,
-  variant = 'primary',
+  variant = "primary",
   fullWidth = false,
-  className = '',
+  className = "",
   ...props
 }: ButtonProps) {
-  const baseStyles = 'rounded-lg py-2 px-4 font-medium shadow-sm focus:ring-2 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed';
-  
-  const variantStyles = {
-    primary: 'text-white focus:ring-blue-500 hover:opacity-90',
-    secondary: 'bg-gray-100 text-gray-900 hover:bg-gray-200 focus:ring-gray-500',
-    outline: 'border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:ring-blue-500',
+  const variants = {
+    primary:
+      "bg-[#8B1E2D] text-white border-[#8B1E2D] hover:bg-[#A52836] hover:-translate-y-0.5 hover:shadow-lg",
+    secondary:
+      "bg-[#FFF7D6] text-[#8B1E2D] border-[#F1D6A8] hover:bg-[#FFE9A8]",
+    outline:
+      "bg-white text-[#8B1E2D] border-[#DCCBBB] hover:border-[#8B1E2D] hover:bg-[#FFFDF5]",
   };
-
-  const widthStyle = fullWidth ? 'w-full' : '';
 
   return (
     <button
-      className={`${baseStyles} ${variantStyles[variant]} ${widthStyle} ${className}`}
-      style={variant === 'primary' ? { backgroundColor: '#0B5FFF' } : undefined}
+      className={`inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border px-5 py-2.5 text-sm font-bold transition duration-200 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50 ${
+        variants[variant]
+      } ${fullWidth ? "w-full" : ""} ${className}`}
       {...props}
     >
-
       {children}
     </button>
   );
 }
-

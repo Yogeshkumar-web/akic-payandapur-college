@@ -14,15 +14,15 @@ export default function LoginPage() {
   const [state, formAction, isPending] = useActionState(login, initialState)
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top_right,rgba(198,40,40,0.12),transparent_35%),#FFFDF5] px-4 py-12">
+      <div className="w-full max-w-md space-y-8 rounded-3xl border border-[#EADFD2] bg-white p-6 shadow-[0_24px_70px_rgba(95,15,26,0.14)] sm:p-9">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900" style={{ fontFamily: 'Inter, sans-serif' }}>
+          <h2 className="mt-4 text-center text-3xl font-extrabold tracking-[-0.035em] text-[#8B1E2D]" style={{ fontFamily: 'Inter, sans-serif' }}>
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
             Or{' '}
-            <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link href="/register" className="font-medium text-red-700 hover:text-yellow-500">
               create a new account
             </Link>
           </p>
@@ -39,7 +39,7 @@ export default function LoginPage() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="relative block min-h-12 w-full rounded-xl border border-[#DCCBBB] px-4 py-3 text-[#2B1717] outline-none transition placeholder:text-[#A48A7A] focus:border-[#C62828] focus:ring-4 focus:ring-[#C62828]/10"
                 placeholder="Email address"
               />
             </div>
@@ -53,7 +53,7 @@ export default function LoginPage() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                className="relative block min-h-12 w-full rounded-xl border border-[#DCCBBB] px-4 py-3 text-[#2B1717] outline-none transition placeholder:text-[#A48A7A] focus:border-[#C62828] focus:ring-4 focus:ring-[#C62828]/10"
                 placeholder="Password"
               />
             </div>
@@ -68,7 +68,7 @@ export default function LoginPage() {
           <div>
             <Button
               type="submit"
-              className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500"
               disabled={isPending}
             >
               {isPending ? 'Signing in...' : 'Sign in'}

@@ -39,7 +39,7 @@ export default function UploadMaterialPage() {
             name="title"
             id="title"
             required
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border text-gray-900"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border text-gray-900"
           />
         </div>
 
@@ -51,7 +51,7 @@ export default function UploadMaterialPage() {
             name="description"
             id="description"
             rows={3}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border text-gray-900"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border text-gray-900"
           />
         </div>
 
@@ -64,7 +64,7 @@ export default function UploadMaterialPage() {
               name="class"
               id="class"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border text-gray-900"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border text-gray-900"
             >
               <option value="9">Class 9</option>
               <option value="10">Class 10</option>
@@ -82,7 +82,7 @@ export default function UploadMaterialPage() {
               name="subject"
               id="subject"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-3 py-2 border text-gray-900"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 sm:text-sm px-3 py-2 border text-gray-900"
             />
           </div>
         </div>
@@ -99,10 +99,10 @@ export default function UploadMaterialPage() {
               file:mr-4 file:py-2 file:px-4
               file:rounded-full file:border-0
               file:text-sm file:font-semibold
-              file:bg-blue-50 file:text-blue-700
-              hover:file:bg-blue-100"
+              file:bg-yellow-50 file:text-red-800
+              hover:file:bg-yellow-100"
           />
-          {uploading && <p className="text-sm text-blue-600 mt-2">Uploading...</p>}
+          {uploading && <p className="text-sm text-red-700 mt-2">Uploading...</p>}
           {fileUrl && <p className="text-sm text-green-600 mt-2">File uploaded successfully!</p>}
           <input type="hidden" name="fileUrl" value={fileUrl} />
         </div>

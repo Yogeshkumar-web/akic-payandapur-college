@@ -30,30 +30,30 @@ export default async function AdminLayout({
     redirect('/')
   }
 
+  const adminLinks = [
+    { href: '/admin', label: 'Dashboard' },
+    { href: '/admin/notices', label: 'Notices' },
+    { href: '/admin/materials', label: 'Study Materials' },
+    { href: '/admin/contact', label: 'Contact Queries' },
+  ]
+
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="flex min-h-screen flex-col bg-[#FFFDF5]">
       <Navbar />
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-md shrink-0 hidden md:block">
+        <aside className="hidden w-64 shrink-0 border-r border-[#EADFD2] bg-white md:block">
           <div className="p-6">
-            <h1 className="text-2xl font-bold text-blue-600">Admin Panel</h1>
+            <h1 className="font-[var(--font-inter)] text-2xl font-extrabold text-[#8B1E2D]">Admin Panel</h1>
           </div>
-          <nav className="mt-6 px-4 space-y-2">
-            <Link href="/admin" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-              Dashboard
-            </Link>
-            <Link href="/admin/notices" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-              Notices
-            </Link>
-            <Link href="/admin/materials" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-              Study Materials
-            </Link>
-            <Link href="/admin/contact" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg">
-              Contact Queries
-            </Link>
+          <nav className="space-y-2 px-4">
+            {adminLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="block min-h-11 rounded-xl px-4 py-3 font-bold text-[#6F5555] transition hover:bg-[#FFF7D6] hover:text-[#8B1E2D]">
+                {link.label}
+              </Link>
+            ))}
           </nav>
-          <div className="absolute bottom-0 w-64 p-4 border-t">
+          <div className="fixed bottom-0 w-64 border-t border-[#EADFD2] bg-white p-4">
             <form action={signout}>
               <Button variant="outline" className="w-full">
                 Sign Out
@@ -63,14 +63,20 @@ export default async function AdminLayout({
         </aside>
 
         {/* Mobile Header */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex min-w-0 flex-1 flex-col">
           <header className="bg-white shadow-sm md:hidden p-4 flex justify-between items-center">
-              <h1 className="text-xl font-bold text-blue-600">Admin Panel</h1>
-              {/* Mobile menu button could go here */}
+              <h1 className="text-xl font-extrabold text-[#8B1E2D]">Admin Panel</h1>
           </header>
+          <nav className="flex gap-2 overflow-x-auto border-b border-[#EADFD2] bg-white px-4 py-3 md:hidden [scrollbar-width:none]">
+            {adminLinks.map((link) => (
+              <Link key={link.href} href={link.href} className="flex min-h-10 shrink-0 items-center rounded-lg bg-[#FFFDF5] px-3 text-sm font-bold text-[#8B1E2D]">
+                {link.label}
+              </Link>
+            ))}
+          </nav>
 
           {/* Main Content */}
-          <main className="flex-1 p-8 overflow-y-auto">
+          <main className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8">
             {children}
           </main>
         </div>

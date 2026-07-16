@@ -7,17 +7,14 @@ export default function ContactPage() {
     return (
         <>
             <Navbar />
-            <main
-                className='min-h-screen py-16'
-                style={{ backgroundColor: "#F8FAFC" }}
-            >
-                <div className='max-w-7xl mx-auto px-4 md:px-8'>
+            <main className='min-h-screen bg-[#FFFDF5] py-10 md:py-16'>
+                <div className='site-container'>
                     <div className='mb-8'>
                         <h1
                             className='text-4xl md:text-5xl font-bold mb-4'
                             style={{
                                 fontFamily: "Inter, sans-serif",
-                                color: "#0F172A",
+                                color: "#2B1717",
                             }}
                         >
                             Contact Us
@@ -31,7 +28,7 @@ export default function ContactPage() {
                         </p>
                     </div>
 
-                    <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
+                    <div className='grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8'>
                         {/* Contact Information */}
                         <div className='space-y-6'>
                             <Card>
@@ -39,7 +36,7 @@ export default function ContactPage() {
                                     className='text-2xl font-bold mb-6'
                                     style={{
                                         fontFamily: "Inter, sans-serif",
-                                        color: "#0F172A",
+                                        color: "#2B1717",
                                     }}
                                 >
                                     Get in Touch
@@ -49,7 +46,7 @@ export default function ContactPage() {
                                         <div
                                             className='w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0'
                                             style={{
-                                                backgroundColor: "#0B5FFF",
+                                                backgroundColor: "#C62828",
                                             }}
                                         >
                                             <svg
@@ -102,7 +99,7 @@ export default function ContactPage() {
                                         <div
                                             className='w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0'
                                             style={{
-                                                backgroundColor: "#0B5FFF",
+                                                backgroundColor: "#C62828",
                                             }}
                                         >
                                             <svg
@@ -147,7 +144,7 @@ export default function ContactPage() {
                                         <div
                                             className='w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0'
                                             style={{
-                                                backgroundColor: "#0B5FFF",
+                                                backgroundColor: "#C62828",
                                             }}
                                         >
                                             <svg
@@ -192,7 +189,7 @@ export default function ContactPage() {
                                         <div
                                             className='w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0'
                                             style={{
-                                                backgroundColor: "#0B5FFF",
+                                                backgroundColor: "#C62828",
                                             }}
                                         >
                                             <svg
@@ -240,7 +237,7 @@ export default function ContactPage() {
                                     className='text-2xl font-bold mb-4'
                                     style={{
                                         fontFamily: "Inter, sans-serif",
-                                        color: "#0F172A",
+                                        color: "#2B1717",
                                     }}
                                 >
                                     Location
@@ -266,7 +263,7 @@ export default function ContactPage() {
                                     className='text-2xl font-bold mb-6'
                                     style={{
                                         fontFamily: "Inter, sans-serif",
-                                        color: "#0F172A",
+                                        color: "#2B1717",
                                     }}
                                 >
                                     Send us a Message

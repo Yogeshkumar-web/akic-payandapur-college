@@ -51,7 +51,7 @@ export default function AdminContactsPage() {
       case 'pending':
         return 'bg-yellow-100 text-yellow-800';
       case 'read':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-yellow-100 text-red-900';
       case 'resolved':
         return 'bg-green-100 text-green-800';
       default:
@@ -63,7 +63,7 @@ export default function AdminContactsPage() {
     <div>
       <h1
         className="text-4xl font-bold mb-8"
-        style={{ fontFamily: 'Inter, sans-serif', color: '#0F172A' }}
+        style={{ fontFamily: 'Inter, sans-serif', color: '#2B1717' }}
       >
         Contact Submissions
       </h1>
@@ -74,14 +74,14 @@ export default function AdminContactsPage() {
           <Card>
             <h2
               className="text-2xl font-bold mb-6"
-              style={{ fontFamily: 'Inter, sans-serif', color: '#0F172A' }}
+              style={{ fontFamily: 'Inter, sans-serif', color: '#2B1717' }}
             >
               All Submissions
             </h2>
 
             {loading ? (
               <div className="text-center py-12">
-                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-red-700 border-t-transparent"></div>
               </div>
             ) : submissions.length > 0 ? (
               <div className="space-y-4">
@@ -91,7 +91,7 @@ export default function AdminContactsPage() {
                     onClick={() => setSelectedSubmission(submission)}
                     className={`p-4 border-2 rounded-lg cursor-pointer transition ${
                       selectedSubmission?.id === submission.id
-                        ? 'border-blue-500 bg-blue-50'
+                        ? 'border-yellow-500 bg-yellow-50'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -125,7 +125,7 @@ export default function AdminContactsPage() {
             <Card className="sticky top-8">
               <h2
                 className="text-2xl font-bold mb-6"
-                style={{ fontFamily: 'Inter, sans-serif', color: '#0F172A' }}
+                style={{ fontFamily: 'Inter, sans-serif', color: '#2B1717' }}
               >
                 Submission Details
               </h2>
@@ -144,7 +144,7 @@ export default function AdminContactsPage() {
                   </label>
                   <a
                     href={`mailto:${selectedSubmission.email}`}
-                    className="text-blue-600 hover:underline"
+                    className="text-red-700 hover:underline"
                   >
                     {selectedSubmission.email}
                   </a>
@@ -157,7 +157,7 @@ export default function AdminContactsPage() {
                     </label>
                     <a
                       href={`tel:${selectedSubmission.phone}`}
-                      className="text-blue-600 hover:underline"
+                      className="text-red-700 hover:underline"
                     >
                       {selectedSubmission.phone}
                     </a>
@@ -191,7 +191,7 @@ export default function AdminContactsPage() {
                     onChange={(e) =>
                       handleStatusChange(selectedSubmission.id, e.target.value)
                     }
-                    className="w-full px-4 py-2 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                    className="w-full px-4 py-2 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent outline-none"
                   >
                     <option value="pending">Pending</option>
                     <option value="read">Read</option>

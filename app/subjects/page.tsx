@@ -2,6 +2,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Tabs from '@/components/ui/Tabs';
 import Card from '@/components/ui/Card';
+import MotionReveal from '@/components/MotionReveal';
 
 const subjectsData = {
   '9': [
@@ -56,12 +57,12 @@ const subjectsData = {
 
 function SubjectsList({ subjects }: { subjects: Array<{ name: string; description: string }> }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
       {subjects.map((subject, index) => (
-        <Card key={index}>
+        <Card key={index} className="transition duration-200 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(95,15,26,0.1)]">
           <h3
             className="text-xl font-bold mb-2"
-            style={{ color: '#0B5FFF', fontFamily: 'Inter, sans-serif' }}
+            style={{ color: '#C62828', fontFamily: 'Inter, sans-serif' }}
           >
             {subject.name}
           </h3>
@@ -103,12 +104,13 @@ export default function SubjectsPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen py-16" style={{ backgroundColor: '#F8FAFC' }}>
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="mb-8">
+      <main className="min-h-screen bg-white">
+        <section className="page-heading">
+        <div className="site-container">
+          <MotionReveal>
             <h1
-              className="text-4xl md:text-5xl font-bold mb-4"
-              style={{ fontFamily: 'Inter, sans-serif', color: '#0F172A' }}
+              className="mb-4 font-bold"
+              style={{ fontFamily: 'Inter, sans-serif', color: '#2B1717' }}
             >
               Subjects by Class
             </h1>
@@ -118,11 +120,13 @@ export default function SubjectsPage() {
             >
               Explore the comprehensive curriculum offered for each class and stream.
             </p>
-          </div>
-
-          <div className="bg-white rounded-2xl shadow-md p-6 md:p-8">
+          </MotionReveal>
+        </div>
+        </section>
+        <div className="site-container py-10 md:py-16">
+          <MotionReveal className="rounded-2xl border border-[#EADFD2] bg-white p-4 shadow-[0_15px_45px_rgba(95,15,26,0.08)] md:p-8">
             <Tabs tabs={tabs} />
-          </div>
+          </MotionReveal>
         </div>
       </main>
       <Footer />

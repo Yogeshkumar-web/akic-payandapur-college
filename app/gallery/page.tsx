@@ -1,6 +1,7 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
+import MotionReveal from '@/components/MotionReveal';
 
 export default function GalleryPage() {
   const images = [
@@ -20,12 +21,13 @@ export default function GalleryPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen py-16" style={{ backgroundColor: '#F8FAFC' }}>
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="mb-12 text-center">
+      <main className="min-h-screen bg-white">
+        <section className="page-heading text-center">
+        <div className="site-container">
+          <MotionReveal>
             <h1
               className="text-4xl md:text-5xl font-bold mb-4"
-              style={{ fontFamily: 'Inter, sans-serif', color: '#0F172A' }}
+              style={{ fontFamily: 'Inter, sans-serif', color: '#2B1717' }}
             >
               Photo Gallery
             </h1>
@@ -35,13 +37,16 @@ export default function GalleryPage() {
             >
               Glimpses of our college campus, facilities, and student life
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          </MotionReveal>
+        </div>
+        </section>
+        <div className="site-container py-10 md:py-16">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {images.map((image, index) => (
-              <div
+              <MotionReveal
                 key={index}
-                className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition group"
+                delay={(index % 3) * 0.06}
+                className="group overflow-hidden rounded-2xl border border-[#EADFD2] bg-white transition hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(95,15,26,0.12)]"
               >
                 <div className="relative h-64 overflow-hidden">
                   <Image
@@ -52,10 +57,7 @@ export default function GalleryPage() {
                   />
                 </div>
                 <div className="p-4">
-                  <span
-                    className="inline-block px-3 py-1 text-xs font-medium rounded-full mb-2"
-                    style={{ backgroundColor: '#0B5FFF', color: 'white' }}
-                  >
+                  <span className="mb-2 inline-block text-xs font-extrabold uppercase tracking-[0.08em] text-[#C62828]">
                     {image.category}
                   </span>
                   <h3
@@ -65,7 +67,7 @@ export default function GalleryPage() {
                     {image.title}
                   </h3>
                 </div>
-              </div>
+              </MotionReveal>
             ))}
           </div>
         </div>

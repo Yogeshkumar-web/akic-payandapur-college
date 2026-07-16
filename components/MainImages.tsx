@@ -1,370 +1,139 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, useRef } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
-interface MainImagesProps {
-    images?: string[];
-    interval?: number;
-}
+const DEFAULT_IMAGES = [
+  "/college_rooms.jpg",
+  "/college_gate.jpg",
+  "/college_parking.jpg",
+  "/college_middle_view.jpg",
+  "/group_photo.jpg",
+];
 
 export default function MainImages({
-    images = [
-        "/college_rooms.jpg",
-        "/college_gate.jpg",
-        "/college_parking.jpg",
-        "/college_middle_view.jpg",
-        "/group_photo.jpg",
-    ],
-    interval = 3000,
-}: MainImagesProps) {
-    const [index, setIndex] = useState(0);
-    const [isClient, setIsClient] = useState(false);
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
-    const touchStartX = useRef<number | null>(null);
-    const touchEndX = useRef<number | null>(null);
-    const imageCount = images.length;
+  images = DEFAULT_IMAGES,
+  interval = 4500,
+}: {
+  images?: string[];
+  interval?: number;
+}) {
+  const [index, setIndex] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const reduceMotion = useReducedMotion();
 
-    // Client-side only rendering
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
+  const stop = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
+  };
 
-    // Start/restart timer
-    const startTimer = () => {
-        clearTimer();
-        timerRef.current = setInterval(() => {
-            setIndex((prev) => (prev + 1) % imageCount);
-        }, interval);
-    };
+  const start = () => {
+    stop();
+    if (!reduceMotion && images.length > 1) {
+      timerRef.current = setInterval(
+        () => setIndex((current) => (current + 1) % images.length),
+        interval
+      );
+    }
+  };
 
-    const clearTimer = () => {
-        if (timerRef.current) {
-            clearInterval(timerRef.current);
-            timerRef.current = null;
+  useEffect(() => {
+    start();
+    return stop;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [images.length, interval, reduceMotion]);
+
+  const goTo = (nextIndex: number) => {
+    setIndex(nextIndex);
+    start();
+  };
+
+  return (
+    <div
+      className="relative h-full w-full overflow-hidden bg-[#e9f0f8]"
+      onMouseEnter={stop}
+      onMouseLeave={start}
+      onTouchStart={(event) => {
+        touchStartX.current = event.touches[0].clientX;
+        stop();
+      }}
+      onTouchMove={(event) => {
+        touchEndX.current = event.touches[0].clientX;
+      }}
+      onTouchEnd={() => {
+        if (touchStartX.current !== null && touchEndX.current !== null) {
+          const delta = touchStartX.current - touchEndX.current;
+          if (Math.abs(delta) > 50) {
+            goTo(
+              delta > 0
+                ? (index + 1) % images.length
+                : (index - 1 + images.length) % images.length
+            );
+          }
         }
-    };
-
-    useEffect(() => {
-        if (isClient) {
-            startTimer();
-        }
-        return () => clearTimer();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isClient, imageCount, interval]);
-
-    // Pause on hover
-    const handleMouseEnter = () => clearTimer();
-    const handleMouseLeave = () => startTimer();
-
-    // Touch handlers for swipe
-    const onTouchStart = (e: React.TouchEvent) => {
-        touchStartX.current = e.touches[0].clientX;
-        clearTimer();
-    };
-
-    const onTouchMove = (e: React.TouchEvent) => {
-        touchEndX.current = e.touches[0].clientX;
-    };
-
-    const onTouchEnd = () => {
-        if (touchStartX.current == null || touchEndX.current == null) {
-            startTimer();
-            touchStartX.current = null;
-            touchEndX.current = null;
-            return;
-        }
-
-        const delta = touchStartX.current - touchEndX.current;
-
-        if (Math.abs(delta) > 50) {
-            if (delta > 0) {
-                setIndex((i) => (i + 1) % imageCount);
-            } else {
-                setIndex((i) => (i - 1 + imageCount) % imageCount);
-            }
-        }
-
         touchStartX.current = null;
         touchEndX.current = null;
-        startTimer();
-    };
-
-    if (!isClient) {
-        return <div className='absolute inset-0 bg-gray-200 animate-pulse' />;
-    }
-
-    return (
-        <div
-            className='absolute inset-0 w-full h-full'
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            onTouchStart={onTouchStart}
-            onTouchMove={onTouchMove}
-            onTouchEnd={onTouchEnd}
-            aria-roledescription='carousel'
+        start();
+      }}
+      aria-roledescription="carousel"
+      aria-label="College campus photographs"
+    >
+      <AnimatePresence initial={false} mode="sync">
+        <motion.div
+          key={images[index]}
+          className="absolute inset-0"
+          initial={reduceMotion ? false : { opacity: 0, scale: 1.025 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={reduceMotion ? undefined : { opacity: 0 }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
-            {/* Slides */}
-            {images.map((src, i) => (
-                <div
-                    key={i}
-                    className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-                        i === index
-                            ? "opacity-100 z-20"
-                            : "opacity-0 z-10 pointer-events-none"
-                    }`}
-                    aria-hidden={i !== index}
-                >
-                    {/* container uses bg-black so letterbox looks good when object-contain */}
-                    <div className='relative w-full h-full bg-black flex items-center justify-center'>
-                        <Image
-                            src={src}
-                            alt={`Slide ${i + 1}`}
-                            fill
-                            sizes='100vw'
-                            className='object-cover transition-transform duration-500'
-                            draggable={false}
-                            priority={i === 0}
-                            quality={75}
-                        />
-                        {/* <Image
-                            src={src}
-                            alt={`Slide ${i + 1}`}
-                            fill
-                            sizes='100vw'
-                            // mobile-first: contain so full image visible
-                            // md+ use object-cover for hero look on larger screens
-                            className='object-contain md:object-cover transition-transform duration-500'
-                            draggable={false}
-                            priority={i === 0}
-                            quality={75}
-                        /> */}
-                    </div>
+          <Image
+            src={images[index]}
+            alt={`AKIC Payandapur campus view ${index + 1}`}
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority={index === 0}
+            quality={90}
+          />
+        </motion.div>
+      </AnimatePresence>
 
-                    {/* Slight overlay if you want text legibility (optional) */}
-                    <div className='absolute inset-0 pointer-events-none' />
-                </div>
-            ))}
+      <button
+        onClick={() => goTo((index - 1 + images.length) % images.length)}
+        className="absolute left-3 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/70 bg-white/90 text-[#8B1E2D] shadow-lg backdrop-blur transition hover:scale-105 md:left-6"
+        aria-label="Previous campus image"
+      >
+        <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="m15 18-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      <button
+        onClick={() => goTo((index + 1) % images.length)}
+        className="absolute right-3 top-1/2 z-20 flex size-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/70 bg-white/90 text-[#8B1E2D] shadow-lg backdrop-blur transition hover:scale-105 md:right-6"
+        aria-label="Next campus image"
+      >
+        <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="m9 18 6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
 
-            {/* Navigation Dots */}
-            <div className='absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-30'>
-                {images.map((_, i) => (
-                    <button
-                        key={i}
-                        onClick={() => {
-                            setIndex(i);
-                            startTimer();
-                        }}
-                        aria-label={`Go to slide ${i + 1}`}
-                        className={`h-2.5 rounded-full transition-all duration-300 ${
-                            i === index
-                                ? "w-8 bg-white"
-                                : "w-2.5 bg-white/50 hover:bg-white/75"
-                        }`}
-                    />
-                ))}
-            </div>
-
-            {/* Prev / Next buttons */}
-            <button
-                onClick={() => {
-                    setIndex((i) => (i - 1 + imageCount) % imageCount);
-                    startTimer();
-                }}
-                className='absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 text-white z-30 hover:bg-black/60 flex items-center justify-center'
-                aria-label='Previous slide'
-            >
-                ‹
-            </button>
-
-            <button
-                onClick={() => {
-                    setIndex((i) => (i + 1) % imageCount);
-                    startTimer();
-                }}
-                className='absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 text-white z-30 hover:bg-black/60 flex items-center justify-center'
-                aria-label='Next slide'
-            >
-                ›
-            </button>
-        </div>
-    );
+      <div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-2 rounded-full bg-[#5F0F1A]/55 px-3 py-2 backdrop-blur md:bottom-6">
+        {images.map((image, imageIndex) => (
+          <button
+            key={image}
+            onClick={() => goTo(imageIndex)}
+            className={`h-2 rounded-full transition-all ${
+              imageIndex === index ? "w-7 bg-white" : "w-2 bg-white/55 hover:bg-white"
+            }`}
+            aria-label={`Show campus image ${imageIndex + 1}`}
+            aria-current={imageIndex === index}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
-
-// "use client";
-
-// import Image from "next/image";
-// import { useEffect, useState, useRef } from "react";
-
-// interface MainImagesProps {
-//     images?: string[];
-//     interval?: number;
-// }
-
-// export default function MainImages({
-//     images = [
-//         "/college_rooms.jpg",
-//         "/college_gate.jpg",
-//         "/college_parking.jpg",
-//         "/college_middle_view.jpg",
-//         "/group_photo.jpg",
-//     ],
-//     interval = 3000,
-// }: MainImagesProps) {
-//     const [index, setIndex] = useState(0);
-//     const [isClient, setIsClient] = useState(false);
-//     const timerRef = useRef<NodeJS.Timeout | null>(null);
-//     const touchStartX = useRef<number | null>(null);
-//     const touchEndX = useRef<number | null>(null);
-//     const imageCount = images.length;
-
-//     // Client-side only rendering
-//     useEffect(() => {
-//         setIsClient(true);
-//     }, []);
-
-//     // Start/restart timer
-//     const startTimer = () => {
-//         clearTimer();
-//         timerRef.current = setInterval(() => {
-//             setIndex((prev) => (prev + 1) % imageCount);
-//         }, interval);
-//     };
-
-//     const clearTimer = () => {
-//         if (timerRef.current) {
-//             clearInterval(timerRef.current);
-//             timerRef.current = null;
-//         }
-//     };
-
-//     useEffect(() => {
-//         if (isClient) {
-//             startTimer();
-//         }
-//         return () => clearTimer();
-//         // eslint-disable-next-line react-hooks/exhaustive-deps
-//     }, [isClient, imageCount, interval]);
-
-//     // Pause on hover
-//     const handleMouseEnter = () => clearTimer();
-//     const handleMouseLeave = () => startTimer();
-
-//     // Touch handlers for swipe
-//     const onTouchStart = (e: React.TouchEvent) => {
-//         touchStartX.current = e.touches[0].clientX;
-//         clearTimer();
-//     };
-
-//     const onTouchMove = (e: React.TouchEvent) => {
-//         touchEndX.current = e.touches[0].clientX;
-//     };
-
-//     const onTouchEnd = () => {
-//         if (touchStartX.current == null || touchEndX.current == null) {
-//             startTimer();
-//             touchStartX.current = null;
-//             touchEndX.current = null;
-//             return;
-//         }
-
-//         const delta = touchStartX.current - touchEndX.current;
-
-//         if (Math.abs(delta) > 50) {
-//             if (delta > 0) {
-//                 setIndex((i) => (i + 1) % imageCount);
-//             } else {
-//                 setIndex((i) => (i - 1 + imageCount) % imageCount);
-//             }
-//         }
-
-//         touchStartX.current = null;
-//         touchEndX.current = null;
-//         startTimer();
-//     };
-
-//     if (!isClient) {
-//         return <div className='absolute inset-0 bg-gray-200 animate-pulse' />;
-//     }
-
-//     return (
-//         <div
-//             className='absolute inset-0 w-full h-full'
-//             onMouseEnter={handleMouseEnter}
-//             onMouseLeave={handleMouseLeave}
-//             onTouchStart={onTouchStart}
-//             onTouchMove={onTouchMove}
-//             onTouchEnd={onTouchEnd}
-//         >
-//             {/* Images */}
-//             {images.map((src, i) => (
-//                 <div
-//                     key={i}
-//                     className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-//                         i === index
-//                             ? "opacity-100 z-20"
-//                             : "opacity-0 z-10 pointer-events-none"
-//                     }`}
-//                     aria-hidden={i !== index}
-//                 >
-//                     <Image
-//                         src={src}
-//                         alt={`Slide ${i + 1}`}
-//                         fill
-//                         sizes='(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw'
-//                         className='object-cover'
-//                         draggable={false}
-//                         priority={i === 0}
-//                         quality={75}
-//                     />
-
-//                     {/* Dark overlay */}
-//                     <div className='absolute inset-0 bg-black/20' />
-//                 </div>
-//             ))}
-
-//             {/* Navigation Dots */}
-//             <div className='absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-30'>
-//                 {images.map((_, i) => (
-//                     <button
-//                         key={i}
-//                         onClick={() => {
-//                             setIndex(i);
-//                             startTimer();
-//                         }}
-//                         aria-label={`Go to slide ${i + 1}`}
-//                         className={`h-2.5 rounded-full transition-all duration-300 ${
-//                             i === index
-//                                 ? "w-8 bg-white"
-//                                 : "w-2.5 bg-white/50 hover:bg-white/75"
-//                         }`}
-//                     />
-//                 ))}
-//             </div>
-
-//             {/* Previous Button */}
-//             <button
-//                 onClick={() => {
-//                     setIndex((i) => (i - 1 + imageCount) % imageCount);
-//                     startTimer();
-//                 }}
-//                 className='absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm text-white z-30 hover:bg-black/70 transition-all flex items-center justify-center text-3xl font-bold'
-//                 aria-label='Previous slide'
-//             >
-//                 ‹
-//             </button>
-
-//             {/* Next Button */}
-//             <button
-//                 onClick={() => {
-//                     setIndex((i) => (i + 1) % imageCount);
-//                     startTimer();
-//                 }}
-//                 className='absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm text-white z-30 hover:bg-black/70 transition-all flex items-center justify-center text-3xl font-bold'
-//                 aria-label='Next slide'
-//             >
-//                 ›
-//             </button>
-//         </div>
-//     );
-// }
